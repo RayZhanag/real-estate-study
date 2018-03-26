@@ -5,6 +5,9 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import mysql.connector
+
+class NotConfigured(Exception):pass
+
 class CleaningPipeline(object):
     def process_item(self, item, spider):
         if item["houseSourceCode"]:
@@ -93,3 +96,47 @@ class MysqlPipeline(object):
         password=db_settings['password']
         host=db_settings['host']
         return cls(db,user,password,host)
+          
+    def open_spider(self,spider):
+        pass
+    def close_spider(self,spider):
+        self.conn.close()
+        
+class DataVisualizationPipeline(object):
+    def __init__(self,db,user,password,host):
+        self.conn=mysql.connector.connect(  db=db,
+                                            user=user,
+                                            password=password,
+                                            host=host,
+                                            charset='utf8',
+                                            use_unicode=True)
+        self.cursor=self.conn.cursor()
+        self.cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(db))
+        self.cursor.execute("USE {}".fromat(db))
+        
+    @classmethod
+    def from_crawler(cls,crawler):
+        db_settings=crawler.settings.getdict("DB_SETTINGS")
+        if not db_settings:
+            raise NotConfigured
+        db=db_settings['db']
+        user=db_settings['user']
+        password=db_settings['password']
+        host=db_settings['host']
+        return cls(db,user,password,host)
+    container=list()
+    def open_spider(self,spider):
+        pass
+    def close_spider(self,spider):
+        self.cursor.execute("SELECT district,communityName,totalPrice,unitPrice FROM lianjia_db")
+        data=self.cursor.fetchall()
+        unitePrice_list=list(map(lambda i:int(i[3]),data))
+        #totalPrice_list=list(map(lambda i:eval(i[2]),data))
+        plt.hist(unitePrice_list)
+        plt.title("HangZhou real estate unite price distribution")
+        plt.xlabel("price:Yuan")
+        plt.ylabel("counter")
+        plt.show()
+        self.conn.close()
+    def process_item(self,item,spider):
+        return item

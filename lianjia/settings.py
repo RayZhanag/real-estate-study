@@ -70,7 +70,8 @@ DOWNLOADER_MIDDLEWARES = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'lianjia.pipelines.CleaningPipeline':300,
-    'lianjia.pipelines.MysqlPipeline':310
+    'lianjia.pipelines.MysqlPipeline':310,
+    'lianjia.pipelines.DataVisualizationPipeline':320
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
