@@ -138,7 +138,7 @@ LOG_LEVEL = "DEBUG"
 
 DB_SETTINGS = {
   'db': 'lianjia_db',
-  'user': 'root',
-  'password': 'password',
+  'user': 'your_account',
+  'password': 'your_password',
   'host': '127.0.0.1',
 }
