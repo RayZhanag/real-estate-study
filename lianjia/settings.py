@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'lianjia.spiders'
 #USER_AGENT = 'lianjia (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+# ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 3
@@ -138,7 +138,7 @@ LOG_LEVEL = "DEBUG"
 
 DB_SETTINGS = {
   'db': 'lianjia_db',
-  'user': 'root',
-  'password': 'password',
+  'user': 'your_account',
+  'password': 'your_password',
   'host': '127.0.0.1',
 }
